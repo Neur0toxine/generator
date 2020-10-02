@@ -1,0 +1,27 @@
+{
+    "name": "composer-fallback/package-generator",
+    "description": "Generate repository and tags",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.2.5 || ^8.0",
+        "ext-json": "*",
+        "symfony/console": "5.1",
+        "symfony/process": "^5.1",
+        "symfony/var-dumper": "^5.1",
+        "symfony/filesystem": "^5.1",
+        "symfony/http-client": "^5.1",
+        "psr/log": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "ComposerFallback\\PackageGenerator\\": "src"
+        }
+    },
+    "authors": [
+        {
+            "name": "Jérémy Derussé",
+            "email": "jeremy@derusse.com"
+        }
+    ]
+}

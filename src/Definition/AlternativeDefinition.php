@@ -2,20 +2,19 @@
 
 namespace ComposerFallback\PackageGenerator\Definition;
 
-class FallbackDefinition
+class AlternativeDefinition
 {
+    private const VENDOR = 'composer-fallback';
+
+    private $fallback;
     private $name;
     private $definition;
 
-    public function __construct(string $name, array $definition)
+    public function __construct(FallbackDefinition $fallback, string $name, array $definition)
     {
         $this->name = $name;
         $this->definition = $definition;
-    }
-
-    public function getSubject(): string
-    {
-        return $this->definition['subject'] ?? '/';
+        $this->fallback = $fallback;
     }
 
     public function getName(): string
@@ -23,11 +22,23 @@ class FallbackDefinition
         return $this->name;
     }
 
-    /**
-     * @return AlternativeDefinition
-     */
-    public function getAlternatives(): iterable
+    public function getPackageFullName(): string
     {
-        return $this->name;
+        return sprintf("%s/%s", self::VENDOR, $this->getPackageName());
+    }
+
+    public function getPackageName(): string
+    {
+        return sprintf("%s.%s", \str_replace(['.', '/', ' '], ['', '.', '-'], $this->fallback->getName()), $this->name);
+    }
+
+    public function getFallback(): FallbackDefinition
+    {
+        return $this->fallback;
+    }
+
+    public function getPackage(): PackageDefinition
+    {
+        return new PackageDefinition($this->definition);
     }
 }

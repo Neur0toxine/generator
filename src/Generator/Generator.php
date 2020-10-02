@@ -2,54 +2,58 @@
 
 namespace ComposerFallback\PackageGenerator\Generator;
 
+use ComposerFallback\PackageGenerator\Repository\RepositoryWriter;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
-use ComposerFallback\PackageGenerator\Definition\AlternativeDefinition;
-use ComposerFallback\PackageGenerator\Definition\PackageDefinition;
-use ComposerFallback\PackageGenerator\Repository\Writer;
-
-class PackageGenerator
+class Generator
 {
-    private $srcDirectory;
-    private $writer;
+    private $basePath;
+    private $logger;
 
-    public function __construct(Writer $writer)
+    private $alternative;
+    private $repository;
+    private $composerFile;
+    private $readmeFile;
+
+    public function __construct(string $basePath)
     {
-        $this->writer = $writer;
+        $this->basePath = $basePath;
+        $this->logger = new NullLogger();
     }
 
-    public function generate(PackageDefinition $package): void
+    public function setLogger(LoggerInterface $logger): void
     {
-        $this->initializeRepository($package);
-        foreach ($package->getAlternatives() as $alternative) {
-            $this->generateAlternative($alternative);
-        }
-
-        $this->finalizeRepository($package);
+        $this->logger = $logger;
     }
 
-    private function initializeRepository(PackageDefinition $package)
+    public function alternative(): AlternativeGenerator
     {
-        dump('mkdir '.$this->srcDirectory.'/'.$package->getName());
-        dump('git init .');
-        dump('composer init');
-        dump('write readme');
-        dump('git commit');
+        return $this->alternative ?? $this->alternative = new AlternativeGenerator(
+                $this->repository(),
+                $this->composerFile(),
+                $this->readmeFile(),
+                $this->logger
+            );
     }
 
-    private function generateAlternative(AlternativeDefinition $alternative)
+    private function repository(): RepositoryWriter
     {
-        dump('write composer for '.$alternative->getName());
-        dump('git commit');
-        dump('git tag 1.0-'.$alternative->getName());
-        if (0 < $priority = $alternative->getPriority()) {
-            dump('git tag 1.'.$priority.'-'.$alternative->getName());
-        }
+        return $this->repository ?? $this->repository = new RepositoryWriter($this->basePath, $this->logger);
     }
 
-    private function finalizeRepository()
+    private function composerFile(): ComposerFileGenerator
     {
-        dump('reset composer');
-        dump('git commit');
-        dump('git push --all');
+        return $this->composerFile ?? $this->composerFile = new ComposerFileGenerator($this->repository());
+    }
+
+    private function readmeFile(): ReadmeFileGenerator
+    {
+        return $this->readmeFile ?? $this->readmeFile = new ReadmeFileGenerator($this->repository());
+    }
+
+    public function packagist(): PackagistGenerator
+    {
+        return $this->packagist ?? $this->packagist = new PackagistGenerator($this->logger);
     }
 }

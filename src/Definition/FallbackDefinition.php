@@ -2,8 +2,11 @@
 
 namespace ComposerFallback\PackageGenerator\Definition;
 
-class PackageDefinition
+class FallbackDefinition
 {
+    public const TYPE_UNKNOWN = 'unknown';
+    public const TYPE_POLYFILL = 'polyfill';
+    public const TYPE_VIRTUAL = 'virtual';
     private $name;
     private $definition;
 
@@ -18,16 +21,23 @@ class PackageDefinition
         return $this->name;
     }
 
-    public function getPriority(): int
+    public function getType(): string
     {
-        return $this->definition['priority'] ?? 0;
+        return $this->definition['type'] ?? self::TYPE_UNKNOWN;
+    }
+
+    public function getPreferredPackage(): PackageDefinition
+    {
+        return new PackageDefinition($this->definition['preferred']);
     }
 
     /**
-     * @return array<int, string>
+     * @return AlternativeDefinition
      */
-    public function getRequirements(): array
+    public function getAlternatives(): iterable
     {
-        return $this->definition['requirements'] ?? [];
+        foreach ($this->definition['alternatives'] ?? [] as $name => $definition) {
+            yield $name => new AlternativeDefinition($this, $name, $definition);
+        }
     }
 }
