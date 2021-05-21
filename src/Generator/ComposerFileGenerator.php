@@ -8,7 +8,7 @@ use ComposerFallback\PackageGenerator\Repository\RepositoryWriter;
 
 class ComposerFileGenerator
 {
-    public const VENDOR = 'composer-fallback';
+    public const VENDOR = 'Neur0toxine';
 
     private $writer;
 

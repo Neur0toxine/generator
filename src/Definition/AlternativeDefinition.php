@@ -4,7 +4,7 @@ namespace ComposerFallback\PackageGenerator\Definition;
 
 class AlternativeDefinition
 {
-    private const VENDOR = 'composer-fallback';
+    private const VENDOR = 'Neur0toxine';
 
     private $fallback;
     private $name;

@@ -1,51 +1,6 @@
 {
     "fallbacks": {
-        "redis": {
-            "type": "polyfill",
-            "preferred": {
-                "requirements": {
-                    "ext-redis": "*"
-                }
-            },
-            "alternatives": {
-                "predis": {
-                    "requirements": {
-                        "predis/predis": "*"
-                    }
-                }
-            }
-        },
-        "php 8.0": {
-            "type": "polyfill",
-            "preferred": {
-                "requirements": {
-                    "php": ">=8.0"
-                }
-            },
-            "alternatives": {
-                "symfony-polyfill": {
-                    "requirements": {
-                        "symfony/polyfill-php80": "*"
-                    }
-                }
-            }
-        },
-        "intl": {
-            "type": "polyfill",
-            "preferred": {
-                "requirements": {
-                    "ext-intl": "*"
-                }
-            },
-            "alternatives": {
-                "symfony-polyfill": {
-                    "requirements": {
-                        "symfony/intl": "*"
-                    }
-                }
-            }
-        },
-        "php-http/client-implementation": {
+        "psr/http-client-implementation": {
             "type": "virtual",
             "preferred": {
                 "requirements": {}
@@ -56,9 +11,35 @@
                         "symfony/http-client": "*"
                     }
                 },
-                "guzzle7": {
+                "curl": {
                     "requirements": {
-                        "php-http/guzzle7-adapter": "*"
+                        "php-http/curl-client": "*"
+                    }
+                }
+            }
+        },
+        "psr/http-message-implementation": {
+            "type": "virtual",
+            "preferred": {
+                "requirements": {}
+            },
+            "alternatives": {
+                "nyholm": {
+                    "requirements": {
+                        "nyholm/psr7": "*"
+                    }
+                }
+            }
+        },
+        "psr/http-factory-implementation": {
+            "type": "virtual",
+            "preferred": {
+                "requirements": {}
+            },
+            "alternatives": {
+                "nyholm": {
+                    "requirements": {
+                        "nyholm/psr7": "*"
                     }
                 }
             }
