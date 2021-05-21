@@ -6,12 +6,7 @@
                 "requirements": {}
             },
             "alternatives": {
-                "symfony": {
-                    "requirements": {
-                        "symfony/http-client": "*"
-                    }
-                },
-                "curl": {
+                "php-http-curl": {
                     "requirements": {
                         "php-http/curl-client": "*"
                     }

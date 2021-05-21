@@ -20,7 +20,7 @@ class ComposerFileGenerator
     public function generate(AlternativeDefinition $alternative, PackageDefinition $package): void
     {
         $this->writer->writeFile($alternative, 'composer.json', \json_encode([
-            'name' => $alternative->getPackageFullName(),
+            'name' => strtolower($alternative->getPackageFullName()),
             'description' => 'Satisfy "'.$alternative->getFallback()->getName().'" with packages provided by user, or fallback to "'.$alternative->getName().'".',
             'type' => 'metapackage',
             'license' => 'MIT',
